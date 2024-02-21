@@ -52,34 +52,35 @@ const EditorPage = () => {
                 }
             );
 
-            // Listening for disconnected
-            socketRef.current.on(
-                ACTIONS.DISCONNECTED,
-                ({ socketId, username }) => {
-                    toast.success(`${username} left the room.`);
-                    setClients((prev) => {
-                        return prev.filter(
-                            (client) => client.socketId !== socketId
-                        );
-                    });
-                }
-            );
+            // Listing for disconnected
+            socketRef.current.on(ACTIONS.DISCONNECTED,({socketId,username}) =>{
+                toast.success(`${username} left the room`);
+                setClients((prev)=>{
+                    return prev.filter(
+                        (clients) => clients.socketId !== socketId
+                    );
+                });
+            });
+
+            // 
+
+
         };
         init();
-        return () => {
-            socketRef.current.disconnect();
+        return  () => {
+            socketRef.current.disconnect();  
             socketRef.current.off(ACTIONS.JOINED);
             socketRef.current.off(ACTIONS.DISCONNECTED);
-        };
+        }
     }, []);
 
     async function copyRoomId() {
         try {
-            await navigator.clipboard.writeText(roomId);
-            toast.success('Room ID has been copied to your clipboard');
+            await navigator.clipboard.writeText(roomId);  
+            toast.success('Room ID copied to clickboard');           
         } catch (err) {
-            toast.error('Could not copy the Room ID');
-            console.error(err);
+            toast.error('Could not copy Room ID')
+            console.log(err);
         }
     }
 
